@@ -12,6 +12,6 @@
 이미 `Github`에 좋은 `Headless Component` 라이브러리들이 많이 있기 때문에 사실상 `Headless Component`를 직접 구현할 일은 거의 없을겁니다. 
 
 ## 참고
-- [토스 개발자 블로그](https://jbee.io/react/headless-concept/)
+- [국내 블로그](https://jbee.io/react/headless-concept/)
 - [해외 블로그](https://www.joshbritz.co/posts/the-sexiness-of-headless-ui/)
 - [Headless 라이브러리](https://headlessui.dev/)

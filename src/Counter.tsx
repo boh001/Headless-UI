@@ -25,6 +25,7 @@ const defaultBtnCss = css`
   border: none;
   background-color: transparent;
   cursor: pointer;
+  padding: 0;
 `
 
 interface btnProps {

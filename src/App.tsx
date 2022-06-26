@@ -3,17 +3,17 @@ import Counter from './Counter';
 import {css} from "@emotion/css";
 
 const divCss = css`
-  display: flex;
   width: 100%;
   height: 100%;
   background-color: green;
 `
 const containerCss = css`
+  display: flex;
   width: 200px;
   height: 200px;
-  background-color: red;
 `
 const upBtnCss = css`
+  background-color: red;
   height: 100%;
 `
 function App() {
@@ -32,7 +32,7 @@ function App() {
       >
         <div className={containerCss}>
           <Counter.Count>{(count) => <div className={divCss}>{count}</div>}</Counter.Count>
-          <Counter.IncrementBtn><span className={upBtnCss}>+</span></Counter.IncrementBtn>
+          <Counter.IncrementBtn><div className={upBtnCss}>+</div></Counter.IncrementBtn>
           <Counter.DecrementBtn>-</Counter.DecrementBtn>
         </div>
       </Counter.Container>
