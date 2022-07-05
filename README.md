@@ -1,6 +1,6 @@
 # Headless UI
 ## 개요
-최근에 UI 라이브러리들이 기존의 방식의 UI 컴포넌트 뿐만 아니라 Headless 방식의 UI 컴포넌트를 지원하는 것이 대세가 되었습니다. Headless UI라는 것이 어떤 것이 왜 사용되는지 알아보고자 합니다.
+최근에 UI 라이브러리들이 기존의 방식의 UI 컴포넌트 뿐만 아니라 Headless 방식의 UI 컴포넌트를 지원하고있습니다. Headless UI라는 것이 어떤 것이 왜 사용되는지 알아보고자 합니다.
 
 ## 기존 방식
 기존의 방식으로 만들어진 `Counter` 컴포넌트를 예시로 보겠습니다.
@@ -49,9 +49,32 @@ function App() {
 ```
 
 ## Headless 방식
-기본적으로 컴포넌트는 상태, 상태를 제어하는 행위 그리고 스타일로 이루어져있습니다. 
+기본적으로 컴포넌트는 상태, 상태를 제어하는 행위 그리고 스타일로 이루어져있습니다. `Headless` 방식은 상태와 상태를 제어하는 행위에 대한 `interface`를 제공함으로써 추상화시키고 최소한의 구현체를 제공하기도합니다. 또한, [Composition Pattern](https://ko.reactjs.org/docs/composition-vs-inheritance.html)을 이용해서 스타일을 위임합니다.
+
+마찬가지로 `Counter` 컴포넌트를 예시로 사용해보겠습니다. 
+
 ### 추상화
+`Counter` 컴포넌트는 기본적으로 값이라는 상태와 그 값에 대해서 정해진 값만큼 증감하는 행위를 갖고 있습니다.
+따라서 상태와 행위를 아래와 같은 interface로 추상화 시킬 수 있습니다.
+```tsx
+interface Counter {
+  count: number;
+  increment: (value: number) => void;
+  decrement: (value: number) => void;
+}
+```
+
+interface에 따라서 사용자가 구현하게 제공했지만 최소한의 동작을 하는 구현체를 custom hook으로 통해서 제공하는 것도 가능합니다.
+```tsx
+function useCounter(count: number) {
+  const [count, setCount] = React.useState(count)
+
+  return [count, (value: number) => { setCount(count + value) }, (value: number) => { setCount(count - value) }] 
+}
+```
 ### 합성
+`Counter` 컴포넌트를 구성하는 하위 컴포넌트들을 합성을 통해서 제공함으로써 스타일에 대한 책임을 사용자에게 위임할 수 있습니다.
+이를 통해 쓸데없이 스타일 관련된 props를 넘겨받거나 무리한 CSS Override는 필요없어집니다.
 
 ## 결론
 이미 `NPM`에 좋은 `Headless Component` 라이브러리들이 많이 있기 때문에 사실상 `Headless Component`를 직접 구현할 일은 거의 없을겁니다. 하지만 `Headless Component`이 어떤 식으로 구현되고 왜 사용해야되는지를 이해하게 된다면 클린 코드에 가까운 컴포넌트를 쉽게 구현할 수 있을 것입니다.
@@ -60,4 +83,4 @@ function App() {
 - [국내 블로그](https://jbee.io/react/headless-concept/)
 - [해외 블로그](https://www.joshbritz.co/posts/the-sexiness-of-headless-ui/)
 - [Headless 라이브러리](https://headlessui.dev/)
-- [합성 패턴 공식 문서](https://ko.reactjs.org/docs/composition-vs-inheritance.html)
+- [Composition Pattern](https://ko.reactjs.org/docs/composition-vs-inheritance.html)
