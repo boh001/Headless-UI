@@ -1,10 +1,35 @@
 # Headless UI
 ## 개요
-최근에 UI 라이브러리들이 기존의 방식의 UI 컴포넌트 뿐만 아니라 Headless 방식의 UI 컴포넌트를 지원하고있습니다. Headless UI라는 것이 어떤 것이 왜 사용되는지 알아보고자 합니다.
+처음 컴포넌트를 만들면 굉장히 가볍고 간단한 컴포넌트가 만들어집니다. 그러다 시간이 지나고 다른 곳에서 비슷한 스타일과 기능을 필요로 하는 컴포넌트가 생기기 마련입니다.
+
+넓이가 좀 더 길다, 배경색이 다르다, 원래 기능에 추가기능이 필요하다와 같은 요구사항을 만족시키기 위해서 보통 `props`를 추가하고 조건문을 통해서 해결하는 경우가 많습니다.
+
+하지만 이런 방식은 컴포넌트의 코드를 크고 복잡하게 만들고 유지보수하기 힘들게 만듭니다. 
+
+이러한 문제는 저희가 직접 컴포넌트를 만들 때 뿐만 아니라 누군가 NPM에 올린 UI 라이브러리를 사용할 때도 마찬가지로 발생합니다.
+
+그래서 최근 UI library에서 이러한 문제점을 해결하기 위해서 Headless UI 방식의 UI 컴포넌트를 지원하고있습니다. Headless UI라는 것이 어떤 것이고 어떤식으로 문제를 해결하는지 알아보고자 합니다.
 
 ## 기존 방식
 기존의 방식으로 만들어진 `Counter` 컴포넌트를 예시로 보겠습니다.
-이 컴포넌트를 여러군데에서 가져다 쓰기 위해서는 스타일을 재조정할 필요가 있습니다.
+
+처음 이 컴포넌트가 만들어졌을 때는 기본적인 스타일과 1씩 증가시키는 간단한 기능을 갖고 있습니다.
+```tsx
+import React, { useState } from 'react'
+
+function Counter(props: Props) {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div className={containerCls}>
+      <span className={messageCls}>You clicked {count} times</span>
+      <button className={btnCls} onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+```
+
+시간이 지나서 `Counter` 컴포넌트를 여러군데에서 필요하게되었습니다.
 
 스타일을 재조정하기 위해서는 별도의 `className`들을 `props`로 넘기거나 `CSS Override`를 사용해야합니다.
 
