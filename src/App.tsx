@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Counter from './Counter';
+import Counter, { useCounter } from './Counter';
 import {css} from "@emotion/css";
 
 const divCss = css`
@@ -17,18 +17,15 @@ const upBtnCss = css`
   height: 100%;
 `
 function App() {
-  const [count, setCount] = React.useState(0);
+  const {count, increment, decrement} = useCounter(1)
 
   return (
     <div className="App">
       <Counter.Container
         count={count}
-        increment={() => {
-          setCount(count + 1);
-        }}
-        decrement={() => {
-          setCount(count - 1);
-        }}
+        value={1}
+        increment={increment}
+        decrement={decrement}
       >
         <div className={containerCss}>
           <Counter.Count>{(count) => <div className={divCss}>{count}</div>}</Counter.Count>

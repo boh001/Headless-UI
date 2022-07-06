@@ -1,17 +1,32 @@
 import * as React from 'react';
 import {css} from "@emotion/css";
+
+//--------------------------------------------
+// useCounter
+//--------------------------------------------
+export function useCounter(initValue: number) {
+  const [count, setCount] = React.useState(initValue)
+
+  const increment = (value: number) => { setCount(count + value) }
+  const decrement = (value: number) => { setCount(count - value) }
+
+  return {count, increment, decrement}
+}
+
 //--------------------------------------------
 // Context
 //--------------------------------------------
 interface ContextProps {
   count: number;
-  increment: () => void;
-  decrement: () => void;
+  value: number;
+  increment: (value: number) => void;
+  decrement: (value: number) => void;
 }
 const Context = React.createContext<ContextProps>({
   count: 0,
-  increment: () => {},
-  decrement: () => {},
+  value: 1,
+  increment: (value: number) => {},
+  decrement: (value: number) => {},
 });
 
 const useContext = () => {
@@ -33,15 +48,15 @@ interface btnProps {
 }
 
 const IncrementBtn = ({ children }: btnProps) => {
-  const { increment } = useContext();
+  const { increment, value } = useContext();
 
-  return <button className={defaultBtnCss} onClick={increment}>{children}</button>;
+  return <button className={defaultBtnCss} onClick={() => increment(value)}>{children}</button>;
 };
 
 const DecrementBtn = ({ children }: btnProps) => {
-  const { decrement } = useContext();
+  const { decrement, value } = useContext();
 
-  return <button className={defaultBtnCss} onClick={decrement}>{children}</button>;
+  return <button className={defaultBtnCss} onClick={() => decrement(value)}>{children}</button>;
 };
 
 //--------------------------------------------
@@ -67,6 +82,7 @@ const Container = (props: Props & ContextProps) => {
     <Context.Provider
       value={{
         count: props.count,
+        value: props.value,
         increment: props.increment,
         decrement: props.decrement,
       }}
