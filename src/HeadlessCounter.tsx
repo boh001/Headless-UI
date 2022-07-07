@@ -1,16 +1,20 @@
 import * as React from 'react';
-import {css} from "@emotion/css";
+import { css } from '@emotion/css';
 
 //--------------------------------------------
 // useCounter
 //--------------------------------------------
 export function useCounter(initValue: number) {
-  const [count, setCount] = React.useState(initValue)
+  const [count, setCount] = React.useState(initValue);
 
-  const increment = (value: number) => { setCount(count + value) }
-  const decrement = (value: number) => { setCount(count - value) }
+  const increment = () => {
+    setCount(count + 1);
+  };
+  const decrement = () => {
+    setCount(count - 1);
+  };
 
-  return {count, increment, decrement}
+  return { count, increment, decrement };
 }
 
 //--------------------------------------------
@@ -18,15 +22,13 @@ export function useCounter(initValue: number) {
 //--------------------------------------------
 interface ContextProps {
   count: number;
-  value: number;
-  increment: (value: number) => void;
-  decrement: (value: number) => void;
+  increment: () => void;
+  decrement: () => void;
 }
 const Context = React.createContext<ContextProps>({
   count: 0,
-  value: 1,
-  increment: (value: number) => {},
-  decrement: (value: number) => {},
+  increment: () => {},
+  decrement: () => {},
 });
 
 const useContext = () => {
@@ -41,31 +43,39 @@ const defaultBtnCss = css`
   background-color: transparent;
   cursor: pointer;
   padding: 0;
-`
+`;
 
 interface btnProps {
   children: React.ReactNode;
 }
 
 const IncrementBtn = ({ children }: btnProps) => {
-  const { increment, value } = useContext();
+  const { increment } = useContext();
 
-  return <button className={defaultBtnCss} onClick={() => increment(value)}>{children}</button>;
+  return (
+    <button className={defaultBtnCss} onClick={increment}>
+      {children}
+    </button>
+  );
 };
 
 const DecrementBtn = ({ children }: btnProps) => {
-  const { decrement, value } = useContext();
+  const { decrement } = useContext();
 
-  return <button className={defaultBtnCss} onClick={() => decrement(value)}>{children}</button>;
+  return (
+    <button className={defaultBtnCss} onClick={decrement}>
+      {children}
+    </button>
+  );
 };
 
 //--------------------------------------------
-// Count
+// Message
 //--------------------------------------------
-interface CountProps {
+interface MessageProps {
   children: (count: number) => React.ReactNode;
 }
-const Count = ({ children }: CountProps) => {
+const Message = ({ children }: MessageProps) => {
   const { count } = useContext();
 
   return <span>{children(count)}</span>;
@@ -75,19 +85,14 @@ const Count = ({ children }: CountProps) => {
 // Container
 //--------------------------------------------
 interface Props {
-  children: React.ReactNode | React.ReactNode[];
+  children: React.ReactNode | ((context: ContextProps) => React.ReactNode);
 }
 const Container = (props: Props & ContextProps) => {
   return (
-    <Context.Provider
-      value={{
-        count: props.count,
-        value: props.value,
-        increment: props.increment,
-        decrement: props.decrement,
-      }}
-    >
-      {props.children}
+    <Context.Provider value={props}>
+      {typeof props.children === 'function'
+        ? props.children(props)
+        : props.children}
     </Context.Provider>
   );
 };
@@ -99,7 +104,7 @@ const Counter = {
   Container,
   IncrementBtn,
   DecrementBtn,
-  Count,
+  Message,
 };
 
 export default Counter;
