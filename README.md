@@ -79,8 +79,6 @@ function ExampleCounter() {
 - `CSS` 우선순위 때문에 외부에서 override가 불가능할 수 있다.
 - `CSS` 우선순위를 무시하기 위해서 `!important` 구문을 사용하면 되지만 코드를 파악하는게 힘들어집니다.
 
-앞에서 언급한 스타일뿐만 아니라 비슷하지만 조금 다른 기능들이 생긴다면 코드를 재사용하기 더 난감해질 것입니다.
-
 ## Headless 방식
 기본적으로 컴포넌트는 상태, 상태를 제어하는 행위 그리고 스타일로 이루어져있습니다. `Headless` 방식은 상태와 상태를 제어하는 행위에 대한 `interface`로 추상화시켜서 덜 변화하는 것에 의존하게 만듭니다. 또한, [Composition Pattern](https://ko.reactjs.org/docs/composition-vs-inheritance.html)을 이용해서 세 가지 구성요소 중 가장 변동성이 심한 스타일을 사용자에게 위임하여 스타일에 대한 결합을 없애버립니다.
 
